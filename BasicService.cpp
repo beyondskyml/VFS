@@ -66,62 +66,11 @@ void BasicService::test(){
 	system("pause");
 }
 
-//Dir* BasicService::dirHead;
-/*void BasicService::test_8_readDir(){
-		readDir();
-		cout<<"success ^_^"<<endl;
-	Dir * beg = dirHead -> child;
-	Dir * cur = beg;
 
-	while(beg != NULL){
-		cur = beg;
-		while(cur != NULL){
-			cout<<"目录名："<<setw(11)<<cur -> name<<endl;
-			cur = cur -> next;
-		}
-		beg = beg -> child;
-	}
-}
-void BasicService::readDir(){
-	iofile.open("vfs.txt", ios::in);
-	if (! iofile)
-		cerr<<"\t\t\t**  未找到文件..."<<endl;
-	iofile.seekg(superBlockNo * blockSize);
-	// 判断是否存在文件目录信息
-	dirHead = NULL;
-	dirHead = new Dir();
-	Dir * beg = new Dir();
-	Dir * cur = beg;
-	dirHead -> child = beg;
 
-	int depth = 1;
-	int tDepth;
-	string tName;
-	
-	do{
-		iofile>>tDepth>>tName;
-		cout<<tDepth;
-		if (tDepth == 0){
-			break;
-		}
-		else{
-			if (tDepth > depth){
-				depth = tDepth;
-				cur = NULL;
-				beg -> child = new Dir();
-				beg = beg -> child;
-				cur = beg;
-			}
-			cur -> name = tName;
-			cur -> next = new Dir();
-			cur -> child = NULL;
-			cur = cur -> next;
-		}
-	} while (true);
-	cur = NULL;
-	iofile.close();
-}
-*/
+/******************************
+* 从块设备读取目录信息至数组
+*******************************/
 void BasicService::test_8_readDir(){
 	readDir();
 	for (int i = 0; i < 16; ++i){
@@ -150,6 +99,9 @@ void BasicService::readDir(){
 	iofile.close();
 }
 
+/*************************
+* 将目录数组写入块设备
+**************************/
 void BasicService::test_7_writeDir(){
 	dir[0][0] = "sky";   dir[0][1] = "1"; dir[0][2] = "0";
 	dir[1][0] = "long";  dir[1][1] = "1"; dir[1][2] = "1";
@@ -173,78 +125,10 @@ void BasicService::writeDir(){
 	iofile.close();
 }
 
-/*void BasicService::test_7_writeDir(){
-	// 测试用链表
-	dirHead = new Dir();
-	dirHead -> child = new Dir();
-	dirHead -> child -> name = "sky";
-	dirHead -> child -> next = new Dir();
-	dirHead -> child -> child = new Dir();
-	dirHead -> child -> next -> name = "long";
-	dirHead -> child -> next -> next = NULL;
-	dirHead -> child -> next -> child = NULL;
-	dirHead -> child -> child -> name = "doc";
-	dirHead -> child -> child -> next = NULL;
-	dirHead -> child -> child -> child = NULL;
-		writeDir();
-	cout<<"success ^_^"<<endl;
-}*/
 
-/*void BasicService::writeDir(){
-	iofile.open("vfs.txt", ios::in | ios::out);
-	iofile.seekp(superBlockNo * blockSize, ios::beg);
-	if (dirHead == NULL){
-		iofile<<0;
-		iofile.close();
-		return;
-	}
-	Dir * beg = dirHead -> child;	// 当前目录节点
-	Dir * cur = beg;				// 本层起始节点
-	int depth = 1;						// 节点所在深度
-	do{
-		cur = beg;
-		do
-		{
-			iofile<<setw(2)<<setiosflags(ios::left)<<depth;
-			iofile<<setw(11)<<setiosflags(ios::left)<<cur -> name;
-			cur = cur -> next;
-		} while (cur != NULL);
-
-		beg = beg -> child;
-		depth ++;
-	} while(beg != NULL);
-	iofile<<0;
-	iofile.close();
-}
-*/
-
-
-
-/*void BasicService::writeDir(){
-	iofile.open("vfs.txt", ios::in | ios::out);
-	iofile.seekp(superBlockNo * blockSize);
-
-	Dir * cur = dirHead -> next;
-	if (cur == NULL)
-		iofile<<0;
-	else{
-		writeDirCore(cur);
-		iofile<<0;
-	}
-	iofile.close();
-}
-void BasicService::writeDirCore(Dir * cur){
-	iofile<<setw(11)<<setiosflags(ios::left)<<cur -> name;
-	if (cur -> next != NULL)
-		iofile<<"n ";
-	if (cur -> child != NULL)
-		iofile<<"c ";
-	if (cur -> child != NULL)
-		writeDirCore(cur -> child);
-	if (cur -> next != NULL)
-		writeDirCore(cur -> next);
-}*/
-
+/****************************
+* 从块设备读取用户信息至数组
+*****************************/
 string BasicService::user[11][2];
 void BasicService::test_6_readUser(){
 	readUser();
@@ -255,7 +139,6 @@ void BasicService::test_6_readUser(){
 	}
 	cout<<"success ^_^"<<endl;
 }
-// 从文件读取用户信息至数组
 void BasicService::readUser(){
 	iofile.open("vfs.txt", ios::in);
 	string tName;
@@ -274,13 +157,15 @@ void BasicService::readUser(){
 	iofile.close();
 }
 
+/*****************************
+* 将用户信息数组写入块设备
+******************************/
 void BasicService::test_5_writeUser(){
 	user[0][0] = "001"; user[0][1] = "100";
 	user[1][0] = "002"; user[1][1] = "200";
 		writeUser();
 	cout<<"success ^_^"<<endl;
 }
-// 将用户信息数组写入文件 
 void BasicService::writeUser(){
 	iofile.open("vfs.txt", ios::in | ios::out);
 	iofile.seekp(0, ios::beg);
@@ -292,19 +177,14 @@ void BasicService::writeUser(){
 	iofile<<0;
 	iofile.close();
 }
-	
 
-
+// ***********************************
 void BasicService::setFileName(string _fileName){
 	fileName = _fileName;
 }
 void BasicService::setFileUser(string _fileUser){
 	fileUser = _fileUser;
 }
-
-
-
-
 
 
 void BasicService::test_1_createFile_shoule_get_true(){

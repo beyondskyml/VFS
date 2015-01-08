@@ -195,9 +195,9 @@ bool ManageSys::login(string name, string key){
 	return false;
 }
 
-// 测试主函数
-int main(){
-	ManageSys::test();
+// // 测试主函数
+// int main(){
+// 	ManageSys::test();
 
-	return 0;
-}
+// 	return 0;
+// }

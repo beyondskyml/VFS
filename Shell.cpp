@@ -303,8 +303,8 @@ bool Shell::login(){
 	return false;
 }
 
-// int main(){
-// 	// Shell::test();
-// 	Shell::contral();
-// 	return 0;
-// }
+int main(){
+	// Shell::test();
+	Shell::contral();
+	return 0;
+}
