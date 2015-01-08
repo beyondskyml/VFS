@@ -21,22 +21,24 @@ class ManageSys
 public:
 	static Dir * dirHead;
 	static Dir * needNode;
-	int static curpos;
+	static int curpos;
+
+	static Dir* searchCurDir(Dir* curDir, string name);
+	static bool openFile(string curDir, string name);
+	static void test_4_searchNode();
+	static void searchNode(string name);
+	static void searchNodeCore(Dir * cur, string name);
+	static void test_3_writeDir();
+	static void writeDir();
+	static void writeDirCore(Dir * cur);
+	static void outDir();
+	static void outDirCore(Dir * cur);
+	static void test_2_readDir();
+	static void readDir();
+	static void readDirCore(Dir * cur);
 	
-	void static test_4_searchNode();
-	void static searchNode(string name);
-	void static searchNodeCore(Dir * cur, string name);
-	void static test_3_writeDir();
-	void static writeDir();
-	void static writeDirCore(Dir * cur);
-	void static outDir();
-	void static outDirCore(Dir * cur);
-	void static test_2_readDir();
-	void static readDir();
-	void static readDirCore(Dir * cur);
-	
-	void static init();
-	void static test_1_login();
-	void static test();
-	bool static login(string name, string key);
+	static void init();
+	static void test_1_login();
+	static void test();
+	static bool login(string name, string key);
 };

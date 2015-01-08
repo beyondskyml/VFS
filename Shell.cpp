@@ -16,6 +16,7 @@ using namespace std;
 						 <<"      'md'   - create dir\n"\
 						 <<"      'rd'   - delete dir\n"\
 						 <<"      'cd'   - change dir\n"\
+						 <<"      'open' - open   file\n"\
 						 <<"      'exit' - quit\n"\
 						 <<endl;
 void Shell::init(){
@@ -41,18 +42,48 @@ void Shell::contral(){
 			LineTips
 		else if(command == "ls")
 			lsDir();
+		// to - do 有参数指令，可以统一输入参数，检测，然后执行 - else{ if() elseif()... } 
 		else if(command == "md")
 			md();
 		else if(command == "rd")
 			rd();
 		else if(command == "cd")
 			cd();
+		else if(command == "open")
+			open();
 		else{
 			LineWrong
 			LineTips
 		}
 	}
 }
+
+/****************************
+* 字符串 - 长度 - 合法
+* 参数：字符串
+*****************************/
+bool Shell::inputLegal(string input){
+	if (input.length() == 0 || input.length() > 10)
+		return false;
+	return true;
+}
+
+/****************************
+* 打开 - 文件
+* 名称：用户输入
+*****************************/
+void Shell::open(){
+	cout<<">>";
+	string fName;
+	cin >> fName;
+	if (inputLegal(fName)){
+		if(ManageSys::openFile(curDir, fName))
+			LineRight
+		return;
+	}
+	LineWrong
+}
+
 void Shell::rd(){
 	cout<<">>";
 	string aim;

@@ -18,6 +18,10 @@ public:
 	void static md();
 	void static cd();
 	void static rd();
+
+	void static open();
+	bool static inputLegal(string aim);
+	
 	void static test_5_mdDir();
 	void static mdDir(string aim);
 	void static test_4_rdDir();

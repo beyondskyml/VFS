@@ -22,25 +22,62 @@ void ManageSys::test(){
 	system("pause");
 }
 
+/************************
+* 初始化
+* 底层：用户 / 目录
+* 本层：目录树 - 构建
+*************************/
 void ManageSys::init(){
 	BasicService::init();
 	readDir();
 }
 
-Dir * ManageSys::needNode = NULL;
-void ManageSys::test_4_searchNode(){
-	searchNode("f.txt");
-	if(needNode != NULL) 
-		cout<<"name: "<<setw(11)<<setiosflags(ios::left)
-			<<needNode->name
-			<<"success ^_^"<<endl;
-	else cout<<"error XD"<<endl;
+/*****************************
+* 查找 - 文件 - 打开
+* 不存在 - 返回 false
+******************************/
+bool ManageSys::openFile(string curDir, string fName){
+	searchNode(curDir);
+	if (needNode != NULL){
+		Dir* cur = searchCurDir(needNode, fName);
+		if(cur){ // file exist
+			// searchInfoNo
+			cout<<cur -> name<<endl;
+			return true;
+		}
+		else { 	 // file not exist
+			cout<<"Not exist.Create?"<<endl;
+			return false;
+		}
+		return false;
+	}
 }
-// 根据名称查找指定节点
+
+/******************************
+* 查找 - 本目录 - 节点
+* 参数：当前目录, 目录/文件名
+*******************************/
+Dir* ManageSys::searchCurDir(Dir * curDir, string name){
+	Dir * cur = curDir -> child;
+	while(cur != NULL){
+		if (cur -> name == name){
+			return cur;
+		}
+		cur = cur -> next;
+	}
+	return cur;
+}
+
+/*************************
+* 查找 - 目录树 - 节点
+* 参数：目录/文件名
+**************************/
+Dir * ManageSys::needNode = NULL;
 void ManageSys::searchNode(string name){
 	Dir * cur = dirHead -> child;
+	needNode = NULL;
 	if (cur == NULL)
-		needNode = NULL;
+		return;
 	else if(name == "root")
 		needNode = dirHead;
 	else
@@ -55,6 +92,14 @@ void ManageSys::searchNodeCore(Dir * cur, string name){
 		searchNodeCore(cur -> child, name);
 	if (cur -> next != NULL)
 		searchNodeCore(cur -> next, name);
+}
+void ManageSys::test_4_searchNode(){
+	searchNode("f.txt");
+	if(needNode != NULL) 
+		cout<<"name: "<<setw(11)<<setiosflags(ios::left)
+			<<needNode->name
+			<<"success ^_^"<<endl;
+	else cout<<"error XD"<<endl;
 }
 
 // 将目录写入basicservice的dir数组，
